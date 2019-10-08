@@ -1,0 +1,2393 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                                                     //
+// Find Functional Game Here: https://studio.code.org/projects/applab/n--SBGkEHkh6QgXknSOgxUAs1Opzse-w-qSTuiyB4Bo/view //
+//                                                                                                                     //
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+var click = 0;
+var garrison = 20;
+var space = randomNumber(1,5);
+var planetsConquered=0;
+var planetQuestion=0;
+
+
+onEvent("startScreen", "click", function() {
+  setScreen("directions1");//set back to directions1
+  setText("mapGarrison",garrison);
+});
+
+onEvent("directions1", "click", function() {
+  click=click+1;
+  console.log(click);
+  directionsClick();
+});
+
+onEvent("restartGameButton", "click", function() {
+  console.log("restartGameButton clicked!");
+  restartGame();
+});
+
+onEvent("defeatScreen","click",function(){
+  restartGame();
+});
+
+onEvent("victoryScreen","click",function(){
+  setScreen("gameMap");
+  garrison=garrison+20;
+  garrisonOverload();
+  planetsConquered=planetsConquered+1;
+  unlockPlanets();
+  setText("mapGarrison",garrison);
+  planetQuestion=0;
+});
+
+////////////////////////
+//                    //
+//                    //
+//   Main Functions   //
+//                    //
+//                    //
+////////////////////////
+
+function unlockPlanets(){
+  if (planetsConquered==0){
+    showElement("lock1");
+    showElement("lock2");
+    showElement("lock3");
+    showElement("lock4");
+    hideElement("lock");
+  }
+   if (planetsConquered==1){
+    hideElement("lock1");
+    showElement("lock");
+  }
+   if (planetsConquered==2){
+    hideElement("lock2");
+    showElement("lock1");
+  }
+   if (planetsConquered==3){
+    hideElement("lock3");
+    showElement("lock2");
+  }
+  if (planetsConquered==4){
+    hideElement("lock4");
+    showElement("lock3");
+  }
+}
+
+function directionsClick(){
+  if (click==1) {
+    showElement("dir2");
+  }
+
+  if (click==2) {
+    hideElement("dir2");
+    showElement("dir3");
+  }
+
+  if (click==3) {
+    hideElement("dir3");
+    showElement("dir4");
+  }
+
+  if (click==4) {
+    hideElement("dir4");
+    showElement("dir5");
+  }
+
+  if (click==5) {
+    hideElement("dir5");
+    showElement("dir6");
+  }
+  
+    if (click==6) {
+    hideElement("dir6");
+    showElement("dir7");
+  }
+  
+    if (click==7) {
+    hideElement("dir7");
+    showElement("dir8");
+  }
+  
+    if (click==8) {
+    setScreen("gameMap");
+    hideElement("dir8");
+    click=0;
+  }
+}
+
+function planetStart(planetScreen,planetGarrison){
+  setScreen(planetScreen);
+  setText(planetGarrison,garrison);
+}
+
+function restartGame(){
+  setScreen("startScreen");
+  click = 0;
+  garrison = 20;
+  space = randomNumber(1,5);
+  planetsConquered=0;
+  unlockPlanets();
+  dookuHealth = 3;
+  heroLives = 3;
+  setText("mapGarrison",garrison);
+  planetQuestion=0;
+}
+
+function retreat(){
+  setScreen("gameMap");
+  setText("mapGarrison",garrison);
+  space = randomNumber(1,5);
+  planetQuestion=0;
+  checkEnd();
+}
+
+function garrisonOverload(){
+  if(garrison>50){
+    garrison=50;
+  }
+}
+
+function checkEnd(){
+  if (garrison<=0){
+    setScreen("defeatScreen");
+  }
+}
+
+function setPlanet(planetScreen,planetGarrison){
+  if (space == 5){
+    setScreen("spaceDirections");
+  } else {
+  planetStart(planetScreen,planetGarrison);
+  }
+}
+
+
+//////////////////////
+//                  //
+//                  //
+//   Christophsis   //
+//                  //
+//                  //
+//////////////////////
+
+
+onEvent("christophsisPlanet", "click", function() {
+  console.log("christophsisPlanet clicked!");
+  setPlanet("christophsisScreen","chrisGarrison");
+  setText("chrisQuestion1","Drop straight down");
+  setText("chrisQuestion2","Send in an early scout");
+  setText("chrisQuestion3","Send in half the garrison and wait for a response");
+  hideElement("chrisQuestion4");
+  setText("chrisAction","How Should We Invade The Planet?");
+  hideChrisClones();
+  hideElement("chrisLaatAngled");
+    hideElement("chrisLaatHoriz");
+    hideElement("chrisFed");
+    hideElement("chrisB1Two1");
+    hideElement("chrisB1Two2");
+    hideElement("chrisB1Two3");
+    hideElement("chrisB1Two4");
+    hideElement("chrisB1Two5");
+    hideElement("chrisB2One1");
+    hideElement("chrisB2One2");
+    hideElement("chrisB2One3");
+    hideElement("chrisOct");
+});
+
+onEvent("christophsisRetreat","click", function(){
+  retreat();
+});
+
+onEvent("winChris","click",function(){
+  setScreen("victoryScreen");
+});
+
+onEvent("christophsisScreenButton","click",function(){
+  if(planetQuestion==4){
+    setScreen("victoryScreen");
+    showElement("chrisAction");
+  } else{
+    setScreen("christophsisQuestionScreen");
+  }
+});
+
+onEvent ("chrisQuestion1","click",function(){
+   planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-mediumWrong;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-hardWrong;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-mediumRight;
+  }
+  setText("chrisGarrison",garrison);
+  setChrisQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("chrisQuestion1 clicked");
+});
+
+onEvent ("chrisQuestion2","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-easyWrong;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-easyRight;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-hardRight;
+  }
+  setText("chrisGarrison",garrison);
+  setChrisQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("chrisQuestion2 clicked");
+});
+
+onEvent ("chrisQuestion3","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-hardRight;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-easyRight;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-mediumWrong;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-easyRight;
+  }
+  setText("chrisGarrison",garrison);
+  setChrisQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("chrisQuestion3 clicked");
+});
+
+onEvent ("chrisQuestion4","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==3){
+    garrison=garrison-easyWrong;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-mediumWrong;
+  }
+  setText("chrisGarrison",garrison);
+  setChrisQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("chrisQuestion4 clicked");
+});
+
+
+function setChrisQuestions(){
+  if (planetQuestion==1){
+    //button1
+    setText("chrisQuestion1","Shoot at them");
+   
+    //button2
+    setText("chrisQuestion2","Set up rocket launcher and flank the droids");
+    
+    //button3
+    setText("chrisQuestion3","Roll thermal detonator under tank while the droids are shot");
+    
+    setText("chrisAction","A Trade Federation armored patrol comes to investigate landing");
+    showElement("chrisLaatAngled");
+    showElement("chrisLaatHoriz");
+    showElement("chrisFed");
+    showElement("chrisB1Two1");
+    showElement("chrisB1Two2");
+    showElement("chrisB1Two3");
+    showElement("chrisB1Two4");
+    showElement("chrisB1Two5");
+    showElement("chrisB2One1");
+    showElement("chrisB2One2");
+    showElement("chrisB2One3");
+  }
+  if (planetQuestion==2){
+    //button1
+    setText("chrisQuestion1","Call in an airstrike");
+    
+    //button2
+    setText("chrisQuestion2","Shoot at and attempt to blow up its legs");
+    
+    //button3
+    setText("chrisQuestion3","Attempt to attach an explosive charge to its legs");
+    
+    //button4
+    showElement("chrisQuestion4");
+    setText("chrisQuestion4","Destroy the main head");
+    
+    showElement("chrisOct");
+    hideElement("chrisLaatAngled");
+    hideElement("chrisLaatHoriz");
+    hideElement("chrisFed");
+    hideElement("chrisB1Two1");
+    hideElement("chrisB1Two2");
+    hideElement("chrisB1Two3");
+    hideElement("chrisB1Two4");
+    hideElement("chrisB1Two5");
+    hideElement("chrisB2One1");
+    hideElement("chrisB2One2");
+    hideElement("chrisB2One3");
+    
+    setText("chrisAction","As you push on, you encounter an octuptarra droid");
+  }
+  if (planetQuestion==3){
+    //button1
+    setText("chrisQuestion1","Blow up the bridge");
+    
+    //button2
+    setText("chrisQuestion2","Wait for the droids to cross then ambush them");
+    //button3
+    setText("chrisQuestion3","Find cover and engage as they cross the bridge");
+    //button4
+    setText("chrisQuestion4","Charge the droids head on");
+    setText("chrisAction","Droids are spotted on the other side of the bridge");
+    hideElement("chrisOct");
+  }
+  if (planetQuestion==4){
+    hideElement("chrisAction");
+  }
+  garrisonUpdate();
+  setPlanetClones(setChrisClones,hideChrisClones);
+  setScreen("christophsisScreen");
+}
+
+function setChrisClones(){
+  if (garrison >= 1){
+    showElement("chrisClone1");
+  }
+  if (garrison>=2){
+    showElement("chrisClone2");
+  }
+  if (garrison>=3){
+    showElement("chrisClone3");
+  }
+  if (garrison>=4){
+    showElement("chrisClone4");
+  }
+  if (garrison>=5){
+    showElement("chrisClone5");
+  }
+  if (garrison>=6){
+    showElement("chrisClone6");
+  }
+  if (garrison>=7){
+    showElement("chrisClone7");
+  }
+  if (garrison>=8){
+    showElement("chrisClone8");
+  }
+  if (garrison>=9){
+    showElement("chrisClone9");
+  }
+  if (garrison>=10){
+    showElement("chrisClone10");
+  }
+  if (garrison>=11){
+    showElement("chrisClone11");
+  }
+  if (garrison>=12){
+    showElement("chrisClone12");
+  }
+  if (garrison>=13){
+    showElement("chrisClone13");
+  }
+  if (garrison>=14){
+    showElement("chrisClone14");
+  }
+  if (garrison>=15){
+    showElement("chrisClone15");
+  }
+  if (garrison>=16){
+    showElement("chrisClone16");
+  }
+  if (garrison>=17){
+    showElement("chrisClone17");
+  }
+  if (garrison>=18){
+    showElement("chrisClone18");
+  }
+  if (garrison>=19){
+    showElement("chrisClone19");
+  }
+  if (garrison>=20){
+    showElement("chrisClone20");
+  }
+  if (garrison>=21){
+    showElement("chrisClone21");
+  }
+  if (garrison>=22){
+    showElement("chrisClone22");
+  }
+  if (garrison>=23){
+    showElement("chrisClone23");
+  }
+  if (garrison>=24){
+    showElement("chrisClone24");
+  }
+  if (garrison>=25){
+    showElement("chrisClone25");
+  }
+  if (garrison>=26){
+    showElement("chrisClone26");
+  }
+  if (garrison>=27){
+    showElement("chrisClone27");
+  }
+  if (garrison>=28){
+    showElement("chrisClone28");
+  }
+  if (garrison>=29){
+    showElement("chrisClone29");
+  }
+  if (garrison>=30){
+    showElement("chrisClone30");
+  }
+  if (garrison>=31){
+    showElement("chrisClone31");
+  }
+  if (garrison>=32){
+    showElement("chrisClone32");
+  }
+  if (garrison>=33){
+    showElement("chrisClone33");
+  }
+  if (garrison>=34){
+    showElement("chrisClone34");
+  }
+  if (garrison>=35){
+    showElement("chrisClone35");
+  }
+  if (garrison>=36){
+    showElement("chrisClone36");
+  }
+  if (garrison>=37){
+    showElement("chrisClone37");
+  }
+  if (garrison>=38){
+    showElement("chrisClone38");
+  }
+  if (garrison>=39){
+    showElement("chrisClone39");
+  }
+  if (garrison>=40){
+    showElement("chrisClone40");
+  }
+  if (garrison>=41){
+    showElement("chrisClone41");
+  }
+  if (garrison>=42){
+    showElement("chrisClone42");
+  }
+  if (garrison>=43){
+    showElement("chrisClone43");
+  }
+  if (garrison>=44){
+    showElement("chrisClone44");
+  }
+  if (garrison>=45){
+    showElement("chrisClone45");
+  }
+  if (garrison>=46){
+    showElement("chrisClone46");
+  }
+  if (garrison>=47){
+    showElement("chrisClone47");
+  }
+  if (garrison>=48){
+    showElement("chrisClone48");
+  }
+  if (garrison>=49){
+    showElement("chrisClone49");
+  }
+  if (garrison>=50){
+    showElement("chrisClone50");
+  }
+}
+
+function hideChrisClones(){
+  hideElement("chrisClone1");
+  hideElement("chrisClone2");
+  hideElement("chrisClone3");
+  hideElement("chrisClone4");
+  hideElement("chrisClone5");
+  hideElement("chrisClone6");
+  hideElement("chrisClone7");
+  hideElement("chrisClone8");
+  hideElement("chrisClone9");
+  hideElement("chrisClone10");
+  hideElement("chrisClone11");
+  hideElement("chrisClone12");
+  hideElement("chrisClone13");
+  hideElement("chrisClone14");
+  hideElement("chrisClone15");
+  hideElement("chrisClone16");
+  hideElement("chrisClone17");
+  hideElement("chrisClone18");
+  hideElement("chrisClone19");
+  hideElement("chrisClone20");
+  hideElement("chrisClone21");
+  hideElement("chrisClone22");
+  hideElement("chrisClone23");
+  hideElement("chrisClone24");
+  hideElement("chrisClone25");
+  hideElement("chrisClone26");
+  hideElement("chrisClone27");
+  hideElement("chrisClone28");
+  hideElement("chrisClone29");
+  hideElement("chrisClone30");
+  hideElement("chrisClone31");
+  hideElement("chrisClone32");
+  hideElement("chrisClone33");
+  hideElement("chrisClone34");
+  hideElement("chrisClone35");
+  hideElement("chrisClone36");
+  hideElement("chrisClone37");
+  hideElement("chrisClone38");
+  hideElement("chrisClone39");
+  hideElement("chrisClone40");
+  hideElement("chrisClone41");
+  hideElement("chrisClone42");
+  hideElement("chrisClone43");
+  hideElement("chrisClone44");
+  hideElement("chrisClone45");
+  hideElement("chrisClone46");
+  hideElement("chrisClone47");
+  hideElement("chrisClone48");
+  hideElement("chrisClone49");
+  hideElement("chrisClone50");
+}
+
+
+//////////////////////
+//                  //
+//                  //
+//     Geonosis     //
+//                  //
+//                  //
+//////////////////////
+
+onEvent("geonosisPlanet", "click", function() {
+  console.log("geonosisPlanet clicked!");
+  setPlanet("geonosisScreen","geoGarrison");
+  setText("geoQuestion1","Spec Ops hit first to clear a landing spot without support");
+  setText("geoQuestion2","Full Open invasion with massive air landing");
+  setText("geoQuestion3","Bombard Enemy installments from space and continue with limited land invasion");
+  hideElement("geoQuestion4");
+  setText("geoAction","How Should We Invade The Planet?");
+  hideGeoClones();
+  hideElement("geoLaatAngled");
+  hideElement("geoLaatHoriz");
+  hideElement("geoB1Two1");
+  hideElement("geoB1Two9");
+  hideElement("geoB2missile1");
+  hideElement("geoB1Two2");
+  hideElement("geoB1Two3");
+  hideElement("geoB1Two4");
+  hideElement("geoB1Two5");
+  hideElement("geoB1Two6");
+  hideElement("geoB1Two7");
+  hideElement("geoB1Two8");
+  hideElement("geoB2missile2");
+  hideElement("geoB2missile3");
+  hideElement("geoB2missile4");
+  hideElement("geoB2missile5");
+  hideElement("geoB2missile6");
+  hideElement("geoSpiderWalker");
+});
+
+onEvent("geonosisRetreat","click", function(){
+  retreat();
+});
+
+onEvent("winGeo","click",function(){
+  setScreen("victoryScreen");
+});
+
+onEvent("geonosisScreenButton","click",function(){
+  if(planetQuestion==4){
+    setScreen("victoryScreen");
+    showElement("geoAction");
+  } else{
+    setScreen("geonosisQuestionScreen");
+  }
+});
+
+onEvent ("geoQuestion1","click",function(){
+   planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-easyWrong;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-easyRight;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-hardWrong;
+  }
+  setText("geoGarrison",garrison);
+  setGeoQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("geoQuestion1 clicked");
+});
+
+onEvent ("geoQuestion2","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-hardRight;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-hardWrong;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-mediumRight;
+  }
+  setText("geoGarrison",garrison);
+  setGeoQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("geoQuestion2 clicked");
+});
+
+onEvent ("geoQuestion3","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-mediumWrong;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-hardWrong;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-easyRight;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-easyWrong;
+  }
+  setText("geoGarrison",garrison);
+  setGeoQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("geoQuestion3 clicked");
+});
+
+onEvent ("geoQuestion4","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==2){
+    garrison=garrison-mediumWrong;
+  }
+  setText("geoGarrison",garrison);
+  setGeoQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("geoQuestion4 clicked");
+});
+
+
+function setGeoQuestions(){
+  if (planetQuestion==1){
+    //button1
+    setText("geoQuestion1","Circle the wagons and wait for reinforcements");
+   
+    //button2
+    setText("geoQuestion2","Call Danger-Close air support");
+    
+    //button3
+    setText("geoQuestion3","Counterattack");
+    
+    //button4
+    showElement("geoQuestion4");
+    setText("geoQuestion4","Pull back and reform defenses");
+    
+    setText("geoAction","The droids have engaged your landing point.");
+    showElement("geoLaatAngled");
+    showElement("geoLaatHoriz");
+    showElement("geoB1Two1");
+    showElement("geoB1Two2");
+    showElement("geoB1Two3");
+    showElement("geoB1Two4");
+    showElement("geoB1Two5");
+    showElement("geoB1Two6");
+    showElement("geoB1Two7");
+    showElement("geoB1Two8");
+    showElement("geoB1Two9");
+    showElement("geoB2missile1");
+    showElement("geoB2missile2");
+    showElement("geoB2missile3");
+    showElement("geoB2missile4");
+    showElement("geoB2missile5");
+    showElement("geoB2missile6");
+    showElement("geoSpiderWalker");
+  }
+  if (planetQuestion==2){
+    //button1
+    setText("geoQuestion1","Regroup and prepare for the assault on the capitol");
+    
+    //button2
+    setText("geoQuestion2","Stay on the heels of the droids and attempt to destroy their army");
+    
+    //button3
+    setText("geoQuestion3","Slowly advance while being reinforced");
+  
+    //button4
+    hideElement("geoQuestion4");
+    
+    hideElement("geoB1Two2");
+    hideElement("geoB1Two3");
+    hideElement("geoB1Two4");
+    hideElement("geoB1Two5");
+    hideElement("geoB1Two6");
+    hideElement("geoB1Two7");
+    hideElement("geoB1Two8");
+    hideElement("geoB2missile2");
+    hideElement("geoB2missile3");
+    hideElement("geoB2missile4");
+    hideElement("geoB2missile5");
+    hideElement("geoB2missile6");
+    hideElement("geoSpiderWalker");
+    
+    setText("geoAction","After beating back the droid assault, they appear to be withdrawing to the capital.");
+  }
+  if (planetQuestion==3){
+    //button1
+    setText("geoQuestion1","Surround and shell the facility, disregarding the lives of civilians");
+    //button2
+    setText("geoQuestion2","Storm the walls and secure the factory controls");
+    //button3
+    setText("geoQuestion3","Send covert scouts to attempt to open the gates and allow access");
+    //button4
+    hideElement("geoQuestion4");
+    
+    hideElement("geoLaatAngled");
+    hideElement("geoLaatHoriz");
+    hideElement("geoB1Two1");
+    hideElement("geoB1Two9");
+    hideElement("geoB2missile1");
+    
+    setText("geoAction","The droid army is behind the walls of the capitol city, a massive droid production facility.");
+  }
+  if (planetQuestion==4){
+    showElement("geoQuestion4");
+    hideElement("geoAction");
+  }
+  garrisonUpdate();
+  setPlanetClones(setGeoClones,hideGeoClones);
+  setScreen("geonosisScreen");
+}
+
+function setGeoClones(){
+  if (garrison >= 1){
+  showElement("geoClone1");
+  }
+  if (garrison>=2){
+  showElement("geoClone2");
+  }
+  if (garrison>=3){
+  showElement("geoClone3");
+  }
+  if (garrison>=4){
+  showElement("geoClone4");
+  }
+  if (garrison>=5){
+  showElement("geoClone5");
+  }
+  if (garrison>=6){
+  showElement("geoClone6");
+  }
+  if (garrison>=7){
+  showElement("geoClone7");
+  }
+  if (garrison>=8){
+  showElement("geoClone8");
+  }
+  if (garrison>=9){
+  showElement("geoClone9");
+  }
+  if (garrison>=10){
+  showElement("geoClone10");
+  }
+  if (garrison>=11){
+     showElement("geoClone11");
+  }
+  if (garrison>=12){
+     showElement("geoClone12");
+  }
+  if (garrison>=13){
+  showElement("geoClone13");
+  }
+  if (garrison>=14){
+     showElement("geoClone14");
+  }
+  if (garrison>=15){
+     showElement("geoClone15");
+  }
+  if (garrison>=16){
+  showElement("geoClone16");
+  }
+  if (garrison>=17){
+  showElement("geoClone17");
+  }
+  if (garrison>=18){
+  showElement("geoClone18");
+  }
+  if (garrison>=19){
+     showElement("geoClone19");
+  }
+  if (garrison>=20){
+     showElement("geoClone20");
+  }
+  if (garrison>=21){
+     showElement("geoClone21");
+  }
+  if (garrison>=22){
+      showElement("geoClone22");
+  }
+  if (garrison>=23){
+      showElement("geoClone23");
+  }
+  if (garrison>=24){
+      showElement("geoClone24");
+  }
+  if (garrison>=25){
+      showElement("geoClone25");
+  }
+  if (garrison>=26){
+     showElement("geoClone26");
+  }
+  if (garrison>=27){
+    showElement("geoClone27");
+  }
+  if (garrison>=28){
+     showElement("geoClone28");
+  }
+  if (garrison>=29){
+      showElement("geoClone29");
+  }
+  if (garrison>=30){
+     showElement("geoClone30");
+  }
+  if (garrison>=31){
+     showElement("geoClone31");
+  }
+  if (garrison>=32){
+     showElement("geoClone32");
+  }
+  if (garrison>=33){
+      showElement("geoClone33");
+  }
+  if (garrison>=34){
+    showElement("geoClone34");
+  }
+  if (garrison>=35){
+      showElement("geoClone35");
+  }
+  if (garrison>=36){
+     showElement("geoClone36");
+  }
+  if (garrison>=37){
+    showElement("geoClone37");
+  }
+  if (garrison>=38){
+     showElement("geoClone38");
+  }
+  if (garrison>=39){
+      showElement("geoClone39");
+  }
+  if (garrison>=40){
+     showElement("geoClone40");
+  }
+  if (garrison>=41){
+     showElement("geoClone41");
+  }
+  if (garrison>=42){
+     showElement("geoClone42");
+  }
+  if (garrison>=43){
+      showElement("geoClone43");
+  }
+  if (garrison>=44){
+    showElement("geoClone44");
+  }
+  if (garrison>=45){
+      showElement("geoClone45");
+  }
+  if (garrison>=46){
+     showElement("geoClone46");
+  }
+  if (garrison>=47){
+    showElement("geoClone47");
+  }
+  if (garrison>=48){
+     showElement("geoClone48");
+  }
+  if (garrison>=49){
+      showElement("geoClone49");
+  }
+  if (garrison>=50){
+      showElement("geoClone50");
+  }
+}
+
+function hideGeoClones(){
+  hideElement("geoClone1");
+  hideElement("geoClone2");
+  hideElement("geoClone3");
+  hideElement("geoClone4");
+  hideElement("geoClone5");
+  hideElement("geoClone6");
+  hideElement("geoClone7");
+  hideElement("geoClone8");
+  hideElement("geoClone9");
+  hideElement("geoClone10");
+  hideElement("geoClone11");
+  hideElement("geoClone12");
+  hideElement("geoClone13");
+  hideElement("geoClone14");
+  hideElement("geoClone15");
+  hideElement("geoClone16");
+  hideElement("geoClone17");
+  hideElement("geoClone18");
+  hideElement("geoClone19");
+  hideElement("geoClone20");
+  hideElement("geoClone21");
+  hideElement("geoClone22");
+  hideElement("geoClone23");
+  hideElement("geoClone24");
+  hideElement("geoClone25");
+  hideElement("geoClone26");
+  hideElement("geoClone27");
+  hideElement("geoClone28");
+  hideElement("geoClone29");
+  hideElement("geoClone30");
+  hideElement("geoClone31");
+  hideElement("geoClone32");
+  hideElement("geoClone33");
+  hideElement("geoClone34");
+  hideElement("geoClone35");
+  hideElement("geoClone36");
+  hideElement("geoClone37");
+  hideElement("geoClone38");
+  hideElement("geoClone39");
+  hideElement("geoClone40");
+  hideElement("geoClone41");
+  hideElement("geoClone42");
+  hideElement("geoClone43");
+  hideElement("geoClone44");
+  hideElement("geoClone45");
+  hideElement("geoClone46");
+  hideElement("geoClone47");
+  hideElement("geoClone48");
+  hideElement("geoClone49");
+  hideElement("geoClone50");
+}
+
+
+//////////////////////
+//                  //
+//                  //
+//      Utapau      //
+//                  //
+//                  //
+//////////////////////
+
+
+onEvent("utapauPlanet", "click", function() {
+  console.log("utapauPlanet clicked!");
+  setPlanet("utapauScreen","utaGarrison");
+  hideUtaClones();
+  showElement("utaQuestion4");
+  setText("utaQuestion1","Land away from the city and move in from the outskirts so you are not detected");
+  setText("utaQuestion2","Airstrike the area where General Grevious is located disregarding civilian casualties");
+  setText("utaQuestion3","Send General Kenobi to give a nice greeting to General Grevious and distract him so the rest of your troops can enter the planetary system undetected");
+  setText("utaQuestion4","Do not invade this nuetral planet for fear of galactic backlash");
+  setText("utaAction","General Grevious has been found on Utapau, and he must be dealt with. How should we invade the planet?");
+    hideElement("droidBT1");
+    hideElement("droidBT2");
+    hideElement("droidBT3");
+    hideElement("droidBT4");
+    hideElement("droidBT5");
+    hideElement("droids1");
+    hideElement("droids2");
+    hideElement("droids3");
+    hideElement("droids4");
+    hideElement("droids5");
+    hideElement("droids6");
+    hideElement("droids7");
+    hideElement("droids8");
+    hideElement("droids9");
+    hideElement("droids10");
+    hideElement("general");
+});
+
+onEvent("utapauRetreat","click", function(){
+  retreat();
+});
+
+onEvent("winUta","click",function(){
+  setScreen("victoryScreen");
+});
+
+onEvent("utapauScreenButton","click",function(){
+  if(planetQuestion==5){
+    setScreen("victoryScreen");
+  } else{
+    setScreen("utapauQuestionScreen");
+  }
+});
+
+onEvent ("utaQuestion1","click",function(){
+   planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-hardHardWrong;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-hardWrong;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-hardRight;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-easyRight;
+  }
+  if (planetQuestion==5){
+    garrison=garrison-mediumRight;
+  }
+  setText("utaGarrison",garrison);
+  setUtaQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("utaQuestion1 clicked");
+});
+
+onEvent ("utaQuestion2","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-hardHardWrong;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-easyRight;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-mediumRight;
+  }
+  setText("utaGarrison",garrison);
+  setUtaQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("utaQuestion2 clicked");
+});
+
+onEvent ("utaQuestion3","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-easyRight;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-hardRight;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-mediumWrong;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-hardHardWrong;
+  }
+  setText("utaGarrison",garrison);
+  setUtaQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("utaQuestion3 clicked");
+});
+
+onEvent ("utaQuestion4","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-hardHardWrong;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-mediumWrong;
+  }
+  if (planetQuestion==5){
+    garrison=garrison-hardHardWrong;
+  }
+  setText("utaGarrison",garrison);
+  setUtaQuestions();
+  checkEnd();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("utaQuestion4 clicked");
+});
+
+
+function setUtaQuestions(){
+  if (planetQuestion==1){
+    //button1
+    setText("utaQuestion1","Forget about the droids until Grevious is defeated");
+    //button2
+    setText("utaQuestion2","Set up defenses and get ready for a battle");
+    //button3
+    setText("utaQuestion3","Full fledge assault");
+    //button4
+    setText("utaQuestion4","Push forward preciously");
+    
+    setText("utaAction","There are droids protecting the General");
+    
+    showElement("droidBT1");
+    showElement("droidBT2");
+    showElement("droidBT3");
+    showElement("droidBT4");
+    showElement("droidBT5");
+    showElement("droids1");
+    showElement("droids2");
+    showElement("droids3");
+    showElement("droids4");
+    showElement("droids5");
+    showElement("droids6");
+    showElement("droids7");
+    showElement("droids8");
+    showElement("droids9");
+    showElement("droids10");
+    showElement("general");
+  }
+  if (planetQuestion==2){
+    //button1
+    setText("utaQuestion1","Pursue him at all costs");
+    //button2
+    setText("utaQuestion2","Defend the area until it's clear");
+    //button3
+    setText("utaQuestion3","Send half your troops after him");
+    //button4
+    setText("utaQuestion4","Let Obi-Wan deal with him");
+    
+    setText("utaAction","General Grevious has fled");
+    
+    hideElement("droidBT3");
+    hideElement("droidBT4");
+    hideElement("droids1");
+    hideElement("droids6");
+    hideElement("droids7");
+    hideElement("general");
+  }
+  if (planetQuestion==3){
+    //button1
+    setText("utaQuestion1","Keep up the ground assault on the droids stationed here");
+    //button2
+    setText("utaQuestion2","Block Grevious' escape routes to ensure he doesn't flee the planet");
+    //button3
+    setText("utaQuestion3","Air strike the entire city to ensure Grevious' death");
+    //button4
+    hideElement("utaQuestion4");
+    
+    hideElement("droids4");
+    hideElement("droids8");
+    hideElement("droids10");
+    hideElement("droids5");
+    hideElement("droidBT2");
+    hideElement("droidBT5");
+    showElement("droidBT3");
+    showElement("droids1");
+    showElement("droids6");
+    showElement("droids7");
+    
+    setText("utaAction","Kenobi has pursued Grevious further into the city beyond your troops' reach ");
+  }
+  if (planetQuestion==4){
+    //button1
+    setText("utaQuestion1","Keep up the assault till the last droid is destroyed");
+    //button2
+    setText("utaQuestion2","Give Obi-Wan his lightsaber back then take the incoming orders from the Chancellor");
+    //button3
+    setText("utaQuestion3","Pull back the assault from this neutral planet");
+    //button4
+    setText("utaQuestion4","Destroy the entire city and all of the evidence that you were ever here to eliminate potential of galactic backlash");
+    
+    setText("utaAction","Grevious has been defeated");
+    
+    hideElement("droidBT1");
+    hideElement("droids2");
+    hideElement("droids3");
+    hideElement("droids10");
+    hideElement("droids7");
+  }
+  if (planetQuestion==5){
+    hideElement("utaAction");
+    hideElement("droidBT3");
+    hideElement("droids1");
+    hideElement("droids6");
+    hideElement("droids9");
+  }
+  garrisonUpdate();
+  setPlanetClones(setUtaClones,hideUtaClones);
+  setScreen("utapauScreen");
+}
+
+function setUtaClones(){
+  if (garrison >= 1){
+    showElement("utaClone1");
+  }
+  if (garrison>=2){
+    showElement("utaClone2");
+  }
+  if (garrison>=3){
+    showElement("utaClone3");
+  }
+  if (garrison>=4){
+    showElement("utaClone4");
+  }
+  if (garrison>=5){
+    showElement("utaClone5");
+  }
+  if (garrison>=6){
+    showElement("utaClone6");
+  }
+  if (garrison>=7){
+    showElement("utaClone7");
+  }
+  if (garrison>=8){
+    showElement("utaClone8");
+  }
+  if (garrison>=9){
+    showElement("utaClone9");
+  }
+  if (garrison>=10){
+    showElement("utaClone10");
+  }
+  if (garrison>=11){
+     showElement("utaClone11");
+  }
+  if (garrison>=12){
+     showElement("utaClone12");
+  }
+  if (garrison>=13){
+    showElement("utaClone13");
+  }
+  if (garrison>=14){
+     showElement("utaClone14");
+  }
+  if (garrison>=15){
+     showElement("utaClone15");
+  }
+  if (garrison>=16){
+    showElement("utaClone16");
+  }
+  if (garrison>=17){
+    showElement("utaClone17");
+  }
+  if (garrison>=18){
+    showElement("utaClone18");
+  }
+  if (garrison>=19){
+      showElement("utaClone19");
+  }
+  if (garrison>=20){
+      showElement("utaClone20");
+  }
+  if (garrison>=21){
+      showElement("utaClone21");
+  }
+  if (garrison>=22){
+      showElement("utaClone22");
+  }
+  if (garrison>=23){
+      showElement("utaClone23");
+  }
+  if (garrison>=24){
+      showElement("utaClone24");
+  }
+  if (garrison>=25){
+      showElement("utaClone25");
+  }
+  if (garrison>=26){
+     showElement("utaClone26");
+  }
+  if (garrison>=27){
+    showElement("utaClone27");
+  }
+  if (garrison>=28){
+     showElement("utaClone28");
+  }
+  if (garrison>=29){
+      showElement("utaClone29");
+  }
+  if (garrison>=30){
+     showElement("utaClone30");
+  }
+  if (garrison>=31){
+     showElement("utaClone31");
+  }
+  if (garrison>=32){
+     showElement("utaClone32");
+  }
+  if (garrison>=33){
+      showElement("utaClone33");
+  }
+  if (garrison>=34){
+    showElement("utaClone34");
+  }
+  if (garrison>=35){
+      showElement("utaClone35");
+  }
+  if (garrison>=36){
+     showElement("utaClone36");
+  }
+  if (garrison>=37){
+    showElement("utaClone37");
+  }
+  if (garrison>=38){
+     showElement("utaClone38");
+  }
+  if (garrison>=39){
+      showElement("utaClone39");
+  }
+  if (garrison>=40){
+     showElement("utaClone40");
+  }
+  if (garrison>=41){
+     showElement("utaClone41");
+  }
+  if (garrison>=42){
+     showElement("utaClone42");
+  }
+  if (garrison>=43){
+      showElement("utaClone43");
+  }
+  if (garrison>=44){
+    showElement("utaClone44");
+  }
+  if (garrison>=45){
+      showElement("utaClone45");
+  }
+  if (garrison>=46){
+     showElement("utaClone46");
+  }
+  if (garrison>=47){
+    showElement("utaClone47");
+  }
+  if (garrison>=48){
+     showElement("utaClone48");
+  }
+  if (garrison>=49){
+      showElement("utaClone49");
+  }
+  if (garrison>=50){
+      showElement("utaClone50");
+  }
+}
+
+function hideUtaClones(){
+  hideElement("utaClone1");
+  hideElement("utaClone2");
+  hideElement("utaClone3");
+  hideElement("utaClone4");
+  hideElement("utaClone5");
+  hideElement("utaClone6");
+  hideElement("utaClone7");
+  hideElement("utaClone8");
+  hideElement("utaClone9");
+  hideElement("utaClone10");
+  hideElement("utaClone11");
+  hideElement("utaClone12");
+  hideElement("utaClone13");
+  hideElement("utaClone14");
+  hideElement("utaClone15");
+  hideElement("utaClone16");
+  hideElement("utaClone17");
+  hideElement("utaClone18");
+  hideElement("utaClone19");
+  hideElement("utaClone20");
+  hideElement("utaClone21");
+  hideElement("utaClone22");
+  hideElement("utaClone23");
+  hideElement("utaClone24");
+  hideElement("utaClone25");
+  hideElement("utaClone26");
+  hideElement("utaClone27");
+  hideElement("utaClone28");
+  hideElement("utaClone29");
+  hideElement("utaClone30");
+  hideElement("utaClone31");
+  hideElement("utaClone32");
+  hideElement("utaClone33");
+  hideElement("utaClone34");
+  hideElement("utaClone35");
+  hideElement("utaClone36");
+  hideElement("utaClone37");
+  hideElement("utaClone38");
+  hideElement("utaClone39");
+  hideElement("utaClone40");
+  hideElement("utaClone41");
+  hideElement("utaClone42");
+  hideElement("utaClone43");
+  hideElement("utaClone44");
+  hideElement("utaClone45");
+  hideElement("utaClone46");
+  hideElement("utaClone47");
+  hideElement("utaClone48");
+  hideElement("utaClone49");
+  hideElement("utaClone50");
+}
+
+
+//////////////////////
+//                  //
+//                  //
+//      Ryloth      //
+//                  //
+//                  //
+//////////////////////
+
+var garrisonHold;
+
+onEvent("rylothPlanet", "click", function() {
+  console.log("rylothPlanet clicked!");
+  setPlanet("rylothScreen","ryGarrison");
+  hideRyClones();
+  garrisonHold = garrison;
+  setText("ryQuestion1","Land outside the city only with LAAT gunships to try and avoid the fire of the cannons");
+  setText("ryQuestion2","Bring in the large ships anyways and try to dodge the incoming fire");
+  setText("ryQuestion3","Bombard enemy installments from space and continue with limited land invasion");
+  hideElement("ryQuestion4");
+  setText("ryAction","The Twi'leks are being held hostage on their own planet by the Separatists. Republic troops previously stationed there have been wiped out to the last man. You are being called on to free the people. Unfortunately, proton cannons are preventing large troop ships from landing on the surface. How should we invade the planet?");
+  showElement("ryProton1");
+  showElement("ryProton2");
+  showElement("ryProton3");
+  showElement("ryProton4");
+});
+
+onEvent("rylothRetreat","click", function(){
+  retreat();
+  hideElement("ryATTE1");
+});
+
+onEvent("winRy","click",function(){
+  setScreen("victoryScreen");
+  hideElement("ryATTE1");
+});
+
+onEvent("rylothScreenButton","click",function(){
+  if(planetQuestion==7){
+    setScreen("victoryScreen");
+  } else{
+    setScreen("rylothQuestionScreen");
+  }
+});
+
+onEvent ("ryQuestion1","click",function(){
+   planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-easyRight;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-hardHardWrong;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-hardWrong;
+  }
+  if (planetQuestion==5){
+    garrison=garrison-hardWrong;
+  }
+  if (planetQuestion==6){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==7){
+    garrison=garrison-mediumRight;
+  }
+  setText("ryGarrison",garrison);
+  setRyQuestions();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("ryQuestion1 clicked");
+});
+
+onEvent ("ryQuestion2","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-hardWrong;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-hardWrong;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-hardRight;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-hardWrong;
+  }
+  if (planetQuestion==5){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==6){
+    garrison=garrison-hardRight;
+  }
+  if (planetQuestion==7){
+    garrison=garrison-mediumRight;
+  }
+  setText("ryGarrison",garrison);
+  setRyQuestions();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("ryQuestion2 clicked");
+});
+
+onEvent ("ryQuestion3","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    garrison=garrison-hardHardWrong;
+  }
+  if (planetQuestion==2){
+    garrison=garrison-easyRight;
+  }
+  if (planetQuestion==3){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-easyRight;
+  }
+  if (planetQuestion==5){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==6){
+    garrison=garrison-hardWrong;
+  }
+  if (planetQuestion==7){
+    garrison=garrison-hardWrong;
+  }
+  setText("ryGarrison",garrison);
+  setRyQuestions();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("ryQuestion3 clicked");
+});
+
+onEvent ("ryQuestion4","click",function(){
+  planetQuestion=planetQuestion+1;
+  if (planetQuestion==1){
+    
+  }
+  if (planetQuestion==2){
+    
+  }
+  if (planetQuestion==3){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==4){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==5){
+    garrison=garrison-mediumRight;
+  }
+  if (planetQuestion==6){
+    garrison=garrison-hardHardWrong;
+  }
+  if (planetQuestion==7){
+    garrison=garrison-hardRight;
+  }
+  setText("ryGarrison",garrison);
+  setRyQuestions();
+  console.log("planetQuestion: "+ planetQuestion);
+  console.log("ryQuestion4 clicked");
+});
+
+
+function setRyQuestions(){
+  if (garrison<=0){
+    setScreen("defeatScreen");
+  } else{
+    setScreen("rylothScreen");
+  }
+  if (planetQuestion==1){
+    hideElement("rylothRetreat");
+    garrison = 15;
+    setText("ryGarrison",garrison);
+    
+    //button1
+    setText("ryQuestion1","Move forward slowly, watching for traps and other potential ambushes");
+   
+    //button2
+    setText("ryQuestion2","Rush in with all of your men with weapons blazing");
+    
+    //button3
+    setText("ryQuestion3","Send scouts to find the location and check for potential dangers and eliminate them undetected");
+    
+    //button4
+    //nothing right now
+    
+    hideElement("ryProton1");
+    hideElement("ryProton2");
+    hideElement("ryProton3");
+    hideElement("ryProton4");
+    showElement("ryLaatAngled");
+    showElement("ryLaatHoriz");
+    
+    setText("ryAction","You have landed outside the area where the cannons are located. You have very few troops remaining and need reinforcements, but cannot get any while the cannons are still functioning");
+    
+  }
+  if (planetQuestion==2){
+    //button1
+    setText("ryQuestion1","Disregard the natives lives and place explosives around the entire area");
+    
+    //button2
+    setText("ryQuestion2","Set up snipers and eliminate the droids controlling the cannons and its guards");
+    
+    //button3
+    setText("ryQuestion3","Send a squad in to free the hostages then destroy everything");
+    
+    //button4
+    showElement("ryQuestion4");
+    setText("ryQuestion4","Send in a squad to take over one cannon to use it on the other cannons");
+    
+    hideElement("ryLaatAngled");
+    hideElement("ryLaatHoriz");
+    showElement("ryProton3");
+    showElement("ryProton4");
+    showElement("ryB2One1");
+    showElement("ryB2One2");
+    showElement("ryB2One3");
+    showElement("ryB1Two1");
+    showElement("ryB1Two2");
+    showElement("ryB1Two3");
+    showElement("ryB1Two4");
+    showElement("ryB1Two5");
+    
+    setText("ryAction","You have moved in close to where the cannons are located and have learned that the CIS troops are holding a group of hostage natives as shields");
+    
+  }
+  if (planetQuestion==3){
+    //button1
+    setText("ryQuestion1","Run at the tank with the natives in front to prevent your men from being shot first");
+    
+    //button2
+    setText("ryQuestion2","Run and hope it didn't notice you");
+    
+    //button3
+    setText("ryQuestion3","Run to a cannon that is still functioning and destroy the tank with it");
+    
+    //button4
+    setText("ryQuestion4","Have four men run up close to the tank and throw grenades into the cockpits while the rest of your men lay down covering fire");
+    
+    hideElement("ryProton3");
+    hideElement("ryB2One1");
+    hideElement("ryB2One2");
+    hideElement("ryB2One3");
+    hideElement("ryB1Two1");
+    hideElement("ryB1Two2");
+    hideElement("ryB1Two3");
+    hideElement("ryB1Two4");
+    hideElement("ryB1Two5");
+    showElement("ryAAT1");
+    
+    setText("ryAction","An AAT tank was in the area where the cannons were located and was not previously destroyed");
+    
+  }
+  if (planetQuestion==4){
+    
+    garrisonHold = garrisonHold - 10 + garrison;
+    garrison = garrisonHold;
+    showElement("rylothRetreat");
+    
+    //button1
+    setText("ryQuestion1","Split your men into small squads and go in all different directions in hopes of finding the capital");
+    
+    //button2
+    setText("ryQuestion2","Go through the open wasteland which will take longer but holds less environmental dangers, but other dangers could arise");
+    
+    //button3
+    setText("ryQuestion3","Take the beaten mountain path that is quickest to the capital and current intelligence says the enemy does not know of the path");
+    
+    //button4
+    hideElement("ryQuestion4");
+    
+    hideElement("ryProton4");
+    hideElement("ryAAT1");
+    showElement("ryATTE1");
+    
+    setText("ryAction","You have successfully destroyed the proton cannons and now reinforcements can land on the planet. The capital city must be taken. How will you move to the capital? ");
+    
+  }
+  if (planetQuestion==5){
+    //button1
+    setText("ryQuestion1","Deploy the AT-RT's from inside of the AT-TE's to counter-attack ");
+    
+    //button2
+    setText("ryQuestion2","Turn the main cannons of the AT-TE's to try and destroy the tanks while your men shoot at the speeders");
+    
+    //button3
+    setText("ryQuestion3","Try to retreat back in the way you came and hope they cannot follow you");
+    
+    //button4
+    showElement("ryQuestion4");
+    setText("ryQuestion4","Surrender to the enemy and hope that other forces can complete your task");
+    
+    showElement("ryAAT1");
+    showElement("rySTAP1");
+    showElement("rySTAP2");
+    showElement("rySTAP3");
+    
+    setText("ryAction","You and your men have been ambushed by AAT tanks STAP speeders");
+    
+  }
+  if (planetQuestion==6){
+    //button1
+    setText("ryQuestion1","Blow up the bridge and starve out everyone inside");
+    
+    //button2
+    setText("ryQuestion2","Hide men inside of the last enemy convoy approaching the city to get inside and ensure that the gate and bridge stay open while the rest of your men cause a distraction");
+    
+    //button3
+    setText("ryQuestion3","Do a full frontal assault on the capital and attempt to bust your way through the front doors");
+    
+    //button4
+    setText("ryQuestion4","Use the AT-TE main cannons to try and destroy the controls of the bridge so it will be constantly accessible then blow out the front gates");
+    
+    hideElement("rySTAP1");
+    hideElement("rySTAP2");
+    hideElement("rySTAP3");
+    
+    setText("ryAction","You have finally made it to the capital. It is heavily defended and only accessible by a single bridge and gate. You have joined up with native forces to increase your attack force. How shall you attack? ");
+    
+  }
+  garrisonUpdate();
+  setPlanetClones(setRyClones,hideRyClones);
+}
+
+function setRyClones(){
+  if (garrison >= 1){
+  showElement("ryClone1");
+  }
+  if (garrison>=2){
+  showElement("ryClone2");
+  }
+  if (garrison>=3){
+  showElement("ryClone3");
+  }
+  if (garrison>=4){
+  showElement("ryClone4");
+  }
+  if (garrison>=5){
+  showElement("ryClone5");
+  }
+  if (garrison>=6){
+  showElement("ryClone6");
+  }
+  if (garrison>=7){
+  showElement("ryClone7");
+  }
+  if (garrison>=8){
+  showElement("ryClone8");
+  }
+  if (garrison>=9){
+  showElement("ryClone9");
+  }
+  if (garrison>=10){
+  showElement("ryClone10");
+  }
+  if (garrison>=11){
+     showElement("ryClone11");
+  }
+  if (garrison>=12){
+     showElement("ryClone12");
+  }
+  if (garrison>=13){
+  showElement("ryClone13");
+  }
+  if (garrison>=14){
+     showElement("ryClone14");
+  }
+  if (garrison>=15){
+     showElement("ryClone15");
+  }
+  if (garrison>=16){
+  showElement("ryClone16");
+  }
+  if (garrison>=17){
+  showElement("ryClone17");
+  }
+  if (garrison>=18){
+  showElement("ryClone18");
+  }
+  if (garrison>=19){
+     showElement("ryClone19");
+  }
+  if (garrison>=20){
+     showElement("ryClone20");
+  }
+  if (garrison>=21){
+     showElement("ryClone21");
+  }
+  if (garrison>=22){
+      showElement("ryClone22");
+  }
+  if (garrison>=23){
+      showElement("ryClone23");
+  }
+  if (garrison>=24){
+      showElement("ryClone24");
+  }
+  if (garrison>=25){
+      showElement("ryClone25");
+  }
+  if (garrison>=26){
+     showElement("ryClone26");
+  }
+  if (garrison>=27){
+    showElement("ryClone27");
+  }
+  if (garrison>=28){
+     showElement("ryClone28");
+  }
+  if (garrison>=29){
+      showElement("ryClone29");
+  }
+  if (garrison>=30){
+     showElement("ryClone30");
+  }
+  if (garrison>=31){
+     showElement("ryClone31");
+  }
+  if (garrison>=32){
+     showElement("ryClone32");
+  }
+  if (garrison>=33){
+      showElement("ryClone33");
+  }
+  if (garrison>=34){
+    showElement("ryClone34");
+  }
+  if (garrison>=35){
+      showElement("ryClone35");
+  }
+  if (garrison>=36){
+     showElement("ryClone36");
+  }
+  if (garrison>=37){
+    showElement("ryClone37");
+  }
+  if (garrison>=38){
+     showElement("ryClone38");
+  }
+  if (garrison>=39){
+      showElement("ryClone39");
+  }
+  if (garrison>=40){
+     showElement("ryClone40");
+  }
+  if (garrison>=41){
+     showElement("ryClone41");
+  }
+  if (garrison>=42){
+     showElement("ryClone42");
+  }
+  if (garrison>=43){
+      showElement("ryClone43");
+  }
+  if (garrison>=44){
+    showElement("ryClone44");
+  }
+  if (garrison>=45){
+      showElement("ryClone45");
+  }
+  if (garrison>=46){
+     showElement("ryClone46");
+  }
+  if (garrison>=47){
+    showElement("ryClone47");
+  }
+  if (garrison>=48){
+     showElement("ryClone48");
+  }
+  if (garrison>=49){
+      showElement("ryClone49");
+  }
+  if (garrison>=50){
+      showElement("ryClone50");
+  }
+}
+
+function hideRyClones(){
+  hideElement("ryClone1");
+  hideElement("ryClone2");
+  hideElement("ryClone3");
+  hideElement("ryClone4");
+  hideElement("ryClone5");
+  hideElement("ryClone6");
+  hideElement("ryClone7");
+  hideElement("ryClone8");
+  hideElement("ryClone9");
+  hideElement("ryClone10");
+  hideElement("ryClone11");
+  hideElement("ryClone12");
+  hideElement("ryClone13");
+  hideElement("ryClone14");
+  hideElement("ryClone15");
+  hideElement("ryClone16");
+  hideElement("ryClone17");
+  hideElement("ryClone18");
+  hideElement("ryClone19");
+  hideElement("ryClone20");
+  hideElement("ryClone21");
+  hideElement("ryClone22");
+  hideElement("ryClone23");
+  hideElement("ryClone24");
+  hideElement("ryClone25");
+  hideElement("ryClone26");
+  hideElement("ryClone27");
+  hideElement("ryClone28");
+  hideElement("ryClone29");
+  hideElement("ryClone30");
+  hideElement("ryClone31");
+  hideElement("ryClone32");
+  hideElement("ryClone33");
+  hideElement("ryClone34");
+  hideElement("ryClone35");
+  hideElement("ryClone36");
+  hideElement("ryClone37");
+  hideElement("ryClone38");
+  hideElement("ryClone39");
+  hideElement("ryClone40");
+  hideElement("ryClone41");
+  hideElement("ryClone42");
+  hideElement("ryClone43");
+  hideElement("ryClone44");
+  hideElement("ryClone45");
+  hideElement("ryClone46");
+  hideElement("ryClone47");
+  hideElement("ryClone48");
+  hideElement("ryClone49");
+  hideElement("ryClone50");
+}
+
+
+
+//////////////////////
+//                  //
+//                  //
+//   Space Battle   //
+//                  //
+//                  //
+//////////////////////
+
+var posFighterX = randomNumber(-10,10);
+var posFighterY = randomNumber(-10,10);
+var posFighter2X = randomNumber(-10,10);
+var posFighter2Y = randomNumber(-10,10);
+var attackersLeft = 5;
+var spaceLives = 3;
+var livesInterval;
+var weak=0;
+
+onEvent("spaceDirections", "click", function() {
+  click=click+1;
+  console.log(click);
+  spaceDirectionsClick();
+});
+
+/*onEvent("restartGameButtonSpace", "click", function() {
+  console.log("restartGameButton clicked!");
+  clearInterval(livesInterval);
+  restartGameSpace();
+});*/
+
+onEvent("fighter", "click", function() {
+  console.log("fighter destroyed!");
+  hideElement("fighter");
+  showElement("explosion");
+  attackersLeft = attackersLeft - 1;
+  console.log("attack: " +attackersLeft);
+  setTimeout(function (){
+    hideElement("explosion");
+  },1000);
+});
+
+onEvent("fighter2", "click", function() {
+  console.log("fighter destroyed!");
+  hideElement("fighter2");
+  showElement("explosion2");
+  attackersLeft = attackersLeft - 1;
+  console.log("attack: " +attackersLeft);
+  setTimeout(function (){
+    hideElement("explosion2");
+  },1000);
+});
+
+onEvent("weakPoint", "click", function(){
+  console.log("weakPoint hit");
+  attackersLeft = attackersLeft - 1;
+  console.log("attack: " +attackersLeft);
+  hideElement("weakPoint");
+  destroyCruiser();
+});
+
+onEvent("weakPoint2", "click", function(){
+  console.log("weakPoint2 hit");
+  attackersLeft = attackersLeft - 1;
+  console.log("attack: " +attackersLeft);
+  hideElement("weakPoint2");
+  destroyCruiser();
+});
+
+onEvent("weakPoint3", "click", function(){
+  console.log("weakPoint3 hit");
+  attackersLeft = attackersLeft - 1;
+  console.log("attack: " +attackersLeft);
+  hideElement("weakPoint3");
+  destroyCruiser();
+});
+
+onEvent("spaceVictoryScreen", "click", function() {
+  console.log("spaceVictoryScreen clicked!");
+  restartSpaceGame();
+});
+
+onEvent("spaceDefeatScreen", "click", function() {
+  console.log("spaceDefeatScreen clicked!");
+  restartSpaceGame();
+  checkEnd();
+});
+
+
+function spaceDirectionsClick(){
+  if (click==1) {
+    showElement("spaceDir");
+  }
+
+  if (click==2) {
+    hideElement("spaceDir");
+    showElement("spaceDir2");
+    showElement("spaceWeakPointUnusable");
+  }
+
+  if (click==3) {
+    hideElement("spaceDir2");
+    showElement("spaceDir3");
+    hideElement("spaceWeakPointUnusable");
+  }
+
+  if (click==4) {
+    hideElement("spaceDir3");
+    showElement("spaceDir4");
+  }
+  
+  if (click==5) {
+    hideElement("spaceDir4");
+    showElement("spaceDir5");
+  }
+  
+  if (click==6) {
+    hideElement("spaceDir5");
+    showElement("spaceDir6");
+  }
+  
+  if (click==7) {
+    setScreen("spaceBattleMap");
+    hideElement("spaceDir6");
+    click=0;
+    spaceLivesRemoved();
+  }
+  shipMovement("fighter",posFighterX,posFighterY);
+  shipMovement("explosion",posFighterX,posFighterY);
+  shipMovement("fighter2",posFighter2X,posFighter2Y);
+  shipMovement("explosion2",posFighter2X,posFighter2Y);
+}
+
+function shipMovement(shipId,shipVarX,shipVarY){
+  setInterval(function(){
+    if (getXPosition(shipId) < 5){
+      shipVarX = randomNumber(0,15);    
+    } else if (getXPosition(shipId) > 300){
+      shipVarX = randomNumber(-15,0);
+    } else if (getYPosition(shipId) < 5){
+      shipVarY = randomNumber(0,15);
+    } else if (getYPosition(shipId) > 430){
+      shipVarY = randomNumber(-15,0);
+    } else {
+    shipVarX = randomNumber(-15,15);
+    shipVarY = randomNumber(-15,15);
+    }
+    setPosition(shipId, getXPosition(shipId)+shipVarX, 
+          getYPosition(shipId)+shipVarY);
+  },300);
+}
+
+function spaceLivesRemoved(){
+  setText("spaceLivesLabel",spaceLives);
+  livesInterval = setInterval(function(){
+    if (attackersLeft == 5){
+      setTimeout(function (){
+        spaceLives = spaceLives - 1;
+      },3000);
+      setText("spaceLivesLabel",spaceLives);
+    }
+    else if (attackersLeft == 4){
+      setTimeout(function (){
+        spaceLives = spaceLives - 1;
+      },3500);
+      setText("spaceLivesLabel",spaceLives);
+    }
+    else if (attackersLeft == 3){
+      setTimeout(function (){
+        spaceLives = spaceLives - 1;
+      },4000);
+      setText("spaceLivesLabel",spaceLives);
+    }
+    else if (attackersLeft == 2){
+      setTimeout(function (){
+        spaceLives = spaceLives - 1;
+      },4500);
+      setText("spaceLivesLabel",spaceLives);
+    }
+    else if (attackersLeft == 1){
+      setTimeout(function (){
+        spaceLives = spaceLives - 1;
+      },5000);
+      setText("spaceLivesLabel",spaceLives);
+    }
+    else if (attackersLeft == 0){
+      clearInterval(livesInterval);
+      setScreen("spaceVictoryScreen");
+    }
+    if (spaceLives == 0) {
+      clearInterval(livesInterval);
+      setScreen("spaceDefeatScreen");
+      garrison = garrison - 15;
+    }
+  },2500);
+}
+
+function destroyCruiser(){
+  weak=weak+1;
+  if (weak==1){
+    showElement("spaceSmoke");
+  }
+  if (weak==2){
+    showElement("spaceFire");
+  }
+  if (weak==3){
+    hideElement("spaceFire");
+    hideElement("spaceSmoke");
+    showElement("spaceExplosion");
+  }
+}
+
+function restartSpaceGame(){
+  setText("mapGarrison",garrison);
+  setScreen("gameMap");
+  click = 0;
+  space = randomNumber(1,5);
+  hideElement("explosion");
+  showElement("fighter");
+  hideElement("explosion2");
+  showElement("fighter2");
+  attackersLeft = 5;
+  spaceLives = 3;
+  clearInterval(livesInterval);
+  weak=0;
+  hideElement("spaceExplosion");
+  hideElement("spaceFire");
+  hideElement("spaceSmoke");
+  showElement("weakPoint");
+  showElement("weakPoint2");
+  showElement("weakPoint3");
+}
+
+
+//////////////////////
+//                  //
+//                  //
+//      Battle      //
+//                  //
+//                  //
+//////////////////////
+
+
+var easyRight=(0,2);
+var mediumRight=randomNumber(2,6);
+var hardRight=randomNumber(4,10);
+var easyWrong=randomNumber(1,3);
+var mediumWrong=randomNumber(4,8);
+var hardWrong=randomNumber(8,12);
+var hardHardWrong=50; // imminent failure
+
+function garrisonUpdate(){
+ easyRight=randomNumber(0,2);
+ mediumRight=randomNumber(2,6);
+ hardRight=randomNumber(4,10);
+ easyWrong=randomNumber(1,3);
+ mediumWrong=randomNumber(4,8);
+ hardWrong=randomNumber(8,12);
+ hardHardWrong=50;
+}
+
+function setPlanetClones(setClones,hideClones){
+  hideClones();
+  setClones();
+}
+
+
+//////////////////////
+//                  //
+//                  //
+//    Boss Battle   //
+//                  //
+//                  //
+//////////////////////
+
+var saberVarX = randomNumber(-20,20);
+var saberVarY = randomNumber(-20,20);
+var dookuHealth = 3;
+var heroLives = 3;
+var bossInterval;
+
+onEvent("bossDirections", "click", function() {
+  click=click+1;
+  console.log(click);
+  bossDirectionsClick();
+  setText("bossLives",dookuHealth);
+  setText("heroLivesLabel",heroLives);
+});
+
+onEvent("boss", "click", function() {
+  console.log("boss clicked!");
+  if (space == 5){
+    setScreen("spaceDirections");
+  } else {
+  setScreen("bossDirections");
+  bossDirectionsClick();
+  }
+});
+
+onEvent("countDooku","click",function(){
+  dookuHealth=dookuHealth-1;
+  setText("bossLives",dookuHealth);
+});
+
+onEvent("dookuSaber","click",function(){
+  showElement("bossSpark");
+  setTimeout(function(){
+  hideElement("bossSpark");
+  },1000);
+});
+
+onEvent("finalVictoryScreen", "click", function() {
+  console.log("finalVictoryScreen clicked!");
+  restartGame();
+});
+
+onEvent("secondVictoryScreen","click",function(){
+  console.log("finalVictoryScreen clicked!");
+  restartGame();
+});
+
+onEvent("yes66","click",function(){
+  setScreen("secondVictoryScreen");
+});
+
+onEvent("no66","click",function(){
+  setScreen("finalVictoryScreen");
+});
+
+function bossDirectionsClick(){
+  if (click==1) {
+    showElement("bossDir");
+  }
+
+  if (click==2) {
+    hideElement("bossDir");
+    showElement("bossDir2");
+  }
+
+  if (click==3) {
+    hideElement("bossDir2");
+    showElement("bossDir3");
+  }
+
+  if (click==4) {
+    hideElement("bossDir3");
+    showElement("bossDir4");
+  }
+  if (click == 5) {
+    setText("heroLivesLabel",heroLives);
+    setText("bossLives",dookuHealth);
+    setScreen("bossBattle");
+    hideElement("bossDir4");
+    click=0;
+    heroLivesRemoved();
+  }
+  saberMovement("dookuSaber");
+  saberMovement("bossSpark");
+}
+
+function saberMovement(saber){
+  setInterval(function(){
+    if (getXPosition("dookuSaber") < 35){
+      saberVarX = randomNumber(0,30);    
+    } else if (getXPosition("dookuSaber") > 220){
+      saberVarX = randomNumber(-30,0);
+    } else if (getYPosition("dookuSaber") < 10){
+      saberVarY = randomNumber(0,30);
+    } else if (getYPosition("dookuSaber") > 280){
+      saberVarY = randomNumber(-30,0);
+    } else {
+      saberVarX = randomNumber(-30,30);
+      saberVarY = randomNumber(-30,30);
+    }
+    setPosition(saber, getXPosition(saber)+saberVarX, 
+          getYPosition(saber)+saberVarY);
+  },250);
+}
+
+function heroLivesRemoved(){
+  setText("heroLivesLabel",heroLives);
+  bossInterval = setInterval(function(){
+    if (dookuHealth <= 0){
+      clearInterval(bossInterval);
+      setScreen("order66");
+      heroLives = 3;
+      dookuHealth = 3;
+    }
+    if (dookuHealth == 3){
+      setTimeout(function (){
+        heroLives = heroLives - 1;
+      },2000);
+      setText("heroLivesLabel",heroLives);
+    }
+    if (dookuHealth == 2){
+      setTimeout(function (){
+        heroLives = heroLives - 1;
+      },2500);
+      setText("heroLivesLabel",heroLives);
+    }
+    if (dookuHealth == 1){
+      setTimeout(function (){
+        heroLives = heroLives - 1;
+      },3000);
+      setText("heroLivesLabel",heroLives);
+    }
+    if (heroLives <= 0) {
+      clearInterval(bossInterval);
+      setScreen("defeatScreen");
+      heroLives = 3;
+      dookuHealth = 3;
+    }
+  },1000);
+}
+
